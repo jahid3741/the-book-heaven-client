@@ -61,9 +61,7 @@ const Login = () => {
             required
           />
 
-          <p className="text-sm text-right text-blue-500">
-            Forgot Password?
-          </p>
+          <p className="text-sm text-right text-blue-500">Forgot Password?</p>
 
           <button className="btn btn-primary w-full">Login</button>
         </form>

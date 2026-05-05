@@ -10,7 +10,7 @@ const firebaseConfig = {
   projectId: "the-book-heaven-b7031",
   storageBucket: "the-book-heaven-b7031.firebasestorage.app",
   messagingSenderId: "498579246870",
-  appId: "1:498579246870:web:7c79c0dcc48f539ea2ca37"
+  appId: "1:498579246870:web:7c79c0dcc48f539ea2ca37",
 };
 
 // Initialize Firebase
