@@ -15,19 +15,20 @@ const Navbar = () => {
   };
 
   const navLinkStyle = ({ isActive }) =>
-    `relative pb-1 transition-all duration-300 font-medium ${
+    `relative pb-1 transition-all duration-300 font-medium tracking-wide ${
       isActive
-        ? "text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400"
-        : "text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-300 hover:border-b-2 hover:border-purple-600 dark:hover:border-purple-300 border-b-2 border-transparent"
+        ? "text-pink-600 dark:text-pink-400 border-b-2 border-pink-600 dark:border-pink-400"
+        : "text-gray-600 dark:text-gray-300 hover:text-pink-600 dark:hover:text-pink-300 hover:border-b-2 hover:border-pink-600 dark:hover:border-pink-300 border-b-2 border-transparent"
     }`;
 
   return (
-    <div className="sticky top-0 z-50 bg-white/80 dark:bg-black/50 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white">
-      <div className="navbar max-w-7xl mx-auto px-4 md:px-6 h-20">
+    <div className="sticky top-0 z-50 bg-white/70 dark:bg-[#0f081c]/70 backdrop-blur-md border-b border-[#f3f4f6] dark:border-white/10 text-gray-900 dark:text-white transition-colors duration-500">
+      {/* Increased horizontal padding (px-8 lg:px-12) for a spacious feel */}
+      <div className="navbar max-w-7xl mx-auto px-8 lg:px-12 h-24">
         <div className="navbar-start lg:w-1/4">
           <Link
             to="/"
-            className="flex items-center gap-2 text-2xl font-extrabold tracking-wide"
+            className="flex items-center gap-3 text-2xl font-extrabold tracking-wide"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +36,7 @@ const Navbar = () => {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              className="w-8 h-8 text-purple-600 dark:text-purple-500"
+              className="w-8 h-8 text-pink-500 dark:text-pink-400"
             >
               <path
                 strokeLinecap="round"
@@ -48,7 +49,8 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-center hidden lg:flex flex-1 justify-center">
-          <ul className="flex items-center gap-8">
+          {/* Increased gap between links to gap-10 */}
+          <ul className="flex items-center gap-10">
             <li>
               <NavLink to="/" className={navLinkStyle}>
                 Home
@@ -72,7 +74,7 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="navbar-end lg:w-1/4 flex items-center justify-end gap-4">
+        <div className="navbar-end lg:w-1/4 flex items-center justify-end gap-5">
           {user ? (
             <>
               <img
@@ -85,13 +87,13 @@ const Navbar = () => {
                 referrerPolicy="no-referrer"
                 data-tooltip-id="user-tooltip"
                 data-tooltip-content={user?.displayName || "User"}
-                className="w-10 h-10 rounded-full border-2 border-purple-500/50 object-cover cursor-pointer hover:scale-105 transition-transform bg-gray-100"
+                className="w-11 h-11 rounded-full border-2 border-pink-500/50 object-cover cursor-pointer hover:scale-105 transition-transform bg-gray-100 shadow-sm"
               />
               <Tooltip id="user-tooltip" place="bottom" className="z-50" />
 
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-5 py-2 rounded-full border border-gray-300 dark:border-white/30 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 text-sm font-medium cursor-pointer"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-gray-300 dark:border-white/30 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 text-sm font-semibold tracking-wide cursor-pointer"
               >
                 Logout
                 <svg
@@ -114,13 +116,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="px-5 py-2 rounded-full border border-gray-300 dark:border-white/30 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 text-sm font-medium"
+                className="px-6 py-2.5 rounded-full border border-gray-300 dark:border-white/30 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 text-sm font-semibold tracking-wide"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="px-5 py-2 rounded-full bg-purple-600 hover:bg-purple-700 text-white transition-all duration-300 text-sm font-medium shadow-lg shadow-purple-600/30"
+                className="px-6 py-2.5 rounded-full bg-pink-500 hover:bg-pink-600 text-white transition-all duration-300 text-sm font-semibold tracking-wide shadow-lg shadow-pink-500/30"
               >
                 Register
               </Link>
