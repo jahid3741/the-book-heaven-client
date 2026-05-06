@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import api from "../../api/axios";
+import Spinner from "../../Components/Spinner/Spinner";
 
 const UpdateBook = () => {
   const { id } = useParams();
@@ -8,13 +10,12 @@ const UpdateBook = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/books/${id}`)
-      .then(res => res.json())
-      .then(data => setBook(data));
+    api.get(`/books/${id}`).then((res) => setBook(res.data));
   }, [id]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
+
     const form = e.target;
 
     const updatedBook = {
@@ -26,16 +27,10 @@ const UpdateBook = () => {
       coverImage: form.coverImage.value,
     };
 
-    fetch(`http://localhost:3000/books/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedBook),
-    })
-      .then(res => res.json())
+    api
+      .put(`/books/${id}`, updatedBook)
       .then(() => {
-        toast.success("Book updated successfully");
+        toast.success("Book updated");
         navigate("/my-books");
       })
       .catch(() => {
@@ -43,23 +38,14 @@ const UpdateBook = () => {
       });
   };
 
-  if (!book) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
-  }
+  if (!book) return <Spinner />;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-3xl font-bold text-center mb-6">
-          Update Book
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-6">Update Book</h2>
 
         <form onSubmit={handleUpdate} className="space-y-4">
-
           <input
             name="title"
             defaultValue={book.title}
@@ -102,10 +88,7 @@ const UpdateBook = () => {
             required
           />
 
-          <button className="btn btn-primary w-full">
-            Update Book
-          </button>
-
+          <button className="btn btn-primary w-full">Update Book</button>
         </form>
       </div>
     </div>

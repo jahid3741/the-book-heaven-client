@@ -1,63 +1,118 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { format } from "date-fns";
+
+import api from "../../api/axios";
+import Spinner from "../../Components/Spinner/Spinner";
+import { AuthContext } from "../../Context/AuthProvider";
 
 const BookDetails = () => {
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
+
   const [book, setBook] = useState(null);
-  const navigate = useNavigate();
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/books/${id}`)
-      .then((res) => res.json())
-      .then((data) => setBook(data));
+    api.get(`/books/${id}`).then((res) => setBook(res.data));
   }, [id]);
 
-  if (!book) {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen gap-3">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-        <p>Loading book details...</p>
-      </div>
-    );
-  }
+  useEffect(() => {
+    api.get(`/comments/${id}`).then((res) => setComments(res.data));
+  }, [id]);
+
+  const handleComment = (e) => {
+    e.preventDefault();
+
+    const commentText = e.target.comment.value;
+
+    const commentData = {
+      bookId: id,
+      name: user.displayName,
+      photo: user.photoURL,
+      comment: commentText,
+      createdAt: new Date(),
+    };
+
+    api
+      .post("/comments", commentData)
+      .then(() => {
+        toast.success("Comment added");
+
+        setComments((prev) => [...prev, commentData]);
+
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message || "Something went wrong");
+      });
+  };
+
+  if (!book) return <Spinner />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 py-10 px-4">
-      <div className="max-w-6xl mx-auto bg-white shadow-xl rounded-3xl grid md:grid-cols-2 overflow-hidden">
-        {/* Left side - Image */}
-        <div className="flex items-center justify-center bg-gray-50 p-8">
-          <img
-            src={book.coverImage}
-            alt={book.title}
-            className="w-72 h-[420px] object-cover rounded-xl shadow-lg hover:scale-105 transition"
-          />
+    <div className="max-w-5xl mx-auto p-6">
+      <div className="grid md:grid-cols-2 gap-8 bg-base-100 shadow-xl rounded-xl p-6">
+        <img
+          src={book.coverImage}
+          className="w-full h-[500px] object-cover rounded-xl"
+        />
+
+        <div>
+          <h2 className="text-4xl font-bold mb-4">{book.title}</h2>
+
+          <p className="mb-2">
+            <span className="font-bold">Author:</span> {book.author}
+          </p>
+
+          <p className="mb-2">
+            <span className="font-bold">Genre:</span> {book.genre}
+          </p>
+
+          <p className="mb-2">
+            <span className="font-bold">Rating:</span> ⭐ {book.rating}
+          </p>
+
+          <p className="mt-4">{book.summary}</p>
         </div>
+      </div>
 
-        {/* Right side - Info */}
-        <div className="p-8 space-y-4">
-          <p className="text-sm uppercase text-purple-500 tracking-widest">
-            {book.genre}
-          </p>
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold mb-4">Comments</h2>
 
-          <h1 className="text-4xl font-bold">{book.title}</h1>
+        <form onSubmit={handleComment} className="mb-6">
+          <textarea
+            name="comment"
+            placeholder="Write your comment..."
+            className="textarea textarea-bordered w-full"
+            required
+          />
 
-          <p className="text-lg text-gray-600">
-            by <span className="font-semibold">{book.author}</span>
-          </p>
+          <button className="btn btn-primary mt-3">Add Comment</button>
+        </form>
 
-          <p className="text-yellow-500 font-bold text-lg">
-            ⭐ {book.rating}/5
-          </p>
+        <div className="space-y-4">
+          {comments.map((comment, index) => (
+            <div key={index} className="bg-base-200 p-4 rounded-xl">
+              <div className="flex items-center gap-3 mb-2">
+                <img src={comment.photo} className="w-10 h-10 rounded-full" />
 
-          <p className="text-gray-700 leading-relaxed mt-4">{book.summary}</p>
+                <div>
+                  <h3 className="font-bold">{comment.name}</h3>
 
-          <div className="flex gap-4 mt-6">
-            <button onClick={() => navigate(-1)} className="btn btn-outline">
-              ← Back
-            </button>
+                  <p className="text-sm text-gray-500">
+                    {comment.createdAt
+                      ? format(new Date(comment.createdAt), "PPP p")
+                      : "Just now"}
+                  </p>
+                </div>
+              </div>
 
-            <button className="btn btn-primary">Add to Favorites</button>
-          </div>
+              <p>{comment.comment}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>

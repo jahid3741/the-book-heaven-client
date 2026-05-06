@@ -1,35 +1,35 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router";
-import toast from "react-hot-toast";
 import { AuthContext } from "../../Context/AuthProvider";
+import { Link } from "react-router";
+import api from "../../api/axios";
+
+import toast from "react-hot-toast";
+import Spinner from "../../Components/Spinner/Spinner";
 
 const MyBooks = () => {
   const { user } = useContext(AuthContext);
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState(null);
 
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:3000/my-books?email=${user.email}`)
-        .then((res) => res.json())
-        .then((data) => setBooks(data));
+      api
+        .get(`/my-books?email=${user.email}`)
+        .then((res) => setBooks(res.data));
     }
   }, [user]);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:3000/books/${id}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then(() => {
-        toast.success("Book deleted");
-        setBooks(books.filter((book) => book._id !== id));
-      })
-      .catch(() => toast.error("Delete failed"));
+    api.delete(`/books/${id}`).then(() => {
+      toast.success("Book deleted");
+
+      setBooks((prev) => prev.filter((book) => book._id !== id));
+    });
   };
+  if (!books) return <Spinner />;
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-center">My Books</h2>
+      <h2 className="text-3xl text-center mb-6">My Books</h2>
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
@@ -40,14 +40,14 @@ const MyBooks = () => {
               <th>Author</th>
               <th>Genre</th>
               <th>Rating</th>
-              <th>Actions</th>
+              <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {books.map((book, index) => (
-              <tr key={book._id} className="hover">
-                <td>{index + 1}</td>
+            {books.map((book, i) => (
+              <tr key={book._id}>
+                <td>{i + 1}</td>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
                 <td>{book.genre}</td>
