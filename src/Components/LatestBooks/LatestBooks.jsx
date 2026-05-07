@@ -5,11 +5,20 @@ import { getLatestBooks } from "../../Api/BooksApi";
 const LatestBooks = () => {
   const [books, setBooks] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getLatestBooks()
-      .then((data) => setBooks(data.slice(0, 7)))
-      .catch((err) => console.error(err));
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          setBooks(data.slice(0, 7));
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -19,6 +28,14 @@ const LatestBooks = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [books]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0f081c]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
+      </div>
+    );
+  }
 
   if (books.length === 0) return null;
 
@@ -35,7 +52,6 @@ const LatestBooks = () => {
   };
 
   return (
-    // Increased vertical padding (py-32 md:py-40) to give the content "room to breathe"
     <section className="py-32 md:py-40 px-4 bg-white dark:bg-[#0f081c] text-gray-900 dark:text-white transition-colors duration-500">
       <div className="max-w-7xl mx-auto">
         
@@ -54,7 +70,6 @@ const LatestBooks = () => {
         </div>
 
         {activeBook && (
-          // Removed borders, added soft high-spread shadow, and scale effect
           <div className="relative bg-purple-50/30 dark:bg-[#1a0f2e]/80 text-gray-900 dark:text-white rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] hover:shadow-[0_30px_70px_-15px_rgba(236,72,153,0.15)] hover:scale-[1.02] transition-all duration-500 mb-24 flex flex-col md:flex-row min-h-[450px]">
             
             <div className="md:w-2/5 relative h-80 md:h-auto overflow-hidden">
@@ -82,7 +97,6 @@ const LatestBooks = () => {
               </p>
               
               <div className="flex items-center gap-2 mb-8">
-                {/* Changed star color to Pink */}
                 <p className="text-pink-500 dark:text-pink-400 font-semibold text-lg tracking-widest">
                   {"★".repeat(activeBook.rating)}
                 </p>
@@ -93,7 +107,6 @@ const LatestBooks = () => {
 
               <div className="mt-auto pt-8 flex items-center justify-between">
                 <Link to={`/book-details/${activeBook._id}`}>
-                  {/* Kept Pink accent consistently for buttons */}
                   <button className="bg-pink-500 hover:bg-pink-600 text-white px-8 py-3 rounded uppercase tracking-wider font-semibold transition-colors duration-300 shadow-lg shadow-pink-500/30 cursor-pointer z-10 relative">
                     View Details
                   </button>
@@ -138,7 +151,6 @@ const LatestBooks = () => {
             <Link
               to={`/book-details/${book._id}`}
               key={book._id}
-              // Removed border, added scale-105 and very soft shadows
               className="group bg-white dark:bg-[#1a0f2e] text-gray-900 dark:text-white rounded-xl overflow-hidden shadow-[0_15px_40px_-15px_rgba(0,0,0,0.08)] dark:shadow-[0_15px_40px_-15px_rgba(0,0,0,0.6)] hover:shadow-[0_30px_60px_-15px_rgba(236,72,153,0.15)] dark:hover:shadow-[0_30px_60px_-15px_rgba(236,72,153,0.25)] hover:-translate-y-2 hover:scale-105 transition-all duration-500 flex flex-col block"
             >
               <div className="relative overflow-hidden h-72">
@@ -165,7 +177,6 @@ const LatestBooks = () => {
                   by {book.author}
                 </p>
                 <div className="mt-auto">
-                  {/* Consistently used Pink accent color for rating */}
                   <p className="text-pink-500 dark:text-pink-400 font-semibold text-sm">
                     {"★".repeat(book.rating)}
                     <span className="text-gray-400 dark:text-gray-500 ml-2">{book.rating}.0</span>
@@ -175,7 +186,6 @@ const LatestBooks = () => {
             </Link>
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -34,12 +34,12 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
-useEffect(() => {
-  const unsub = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
-  return () => unsub();
-}, []);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsub();
+  }, []);
 
   const value = {
     user,

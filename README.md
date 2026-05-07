@@ -1,16 +1,134 @@
-# React + Vite
+# Client Side Deployment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+You can deploy the client side using:
 
-Currently, two official plugins are available:
+- Firebase Hosting
+- Netlify
+- Vercel
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+# The Book Heaven - Server Side
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Server Overview
 
-## Expanding the ESLint configuration
+The server side handles:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- MongoDB database operations
+- CRUD operations for books
+- Review storage system
+- User specific book filtering
+
+---
+
+# Live Server Link
+
+Add your live server link here
+
+---
+
+# Technologies Used
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- CORS
+- dotenv
+
+---
+
+# NPM Packages Used
+
+```bash
+npm install express
+npm install cors
+npm install dotenv
+npm install mongodb
+```
+
+---
+
+# Environment Variables
+
+Create a `.env` file and add:
+
+```env
+MONGO_URI=your_mongodb_uri
+PORT=3000
+```
+
+---
+
+# API Endpoints
+
+## Books API
+
+| Method | Endpoint                  | Description     |
+| ------ | ------------------------- | --------------- |
+| GET    | /books                    | Get all books   |
+| GET    | /books/:id                | Get single book |
+| POST   | /books                    | Add new book    |
+| PUT    | /books/:id                | Update book     |
+| DELETE | /books/:id                | Delete book     |
+| GET    | /my-books?email=userEmail | Get user books  |
+
+---
+
+## Reviews API
+
+| Method | Endpoint          | Description        |
+| ------ | ----------------- | ------------------ |
+| POST   | /comments         | Add comment/review |
+| GET    | /comments/:bookId | Get all reviews    |
+
+---
+
+# Run Server Locally
+
+```bash
+npm install
+nodemon index.js
+```
+
+or
+
+```bash
+node index.js
+```
+
+---
+
+# Database
+
+MongoDB Atlas is used for storing:
+
+- Books
+- Reviews/Comments
+
+---
+
+# Server Deployment
+
+You can deploy server side using:
+
+- Render
+- Railway
+- Cyclic
+- Vercel Serverless
+
+---
+
+# Authentication
+
+Firebase Authentication is used.
+
+Authentication Methods:
+
+- Email & Password Login
+- Google Login
+
+# Author
+
+MD JAHIDUL ISLAM

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getLatestBooks } from "../../Api/BooksApi";
+import api from "../../api/axios";
 
 const TopGenres = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    getLatestBooks()
-      .then((data) => setBooks(data))
+    api.get("/books")
+      .then((res) => setBooks(res.data))
       .catch((err) => console.error(err));
   }, []);
 
@@ -28,10 +28,7 @@ const TopGenres = () => {
             Explore Categories
           </p>
           <h2 className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white font-playfair">
-            Top{" "}
-            <span className="text-pink-500 dark:text-pink-400 italic font-serif">
-              Genres
-            </span>
+            Top <span className="text-pink-500 dark:text-pink-400 italic font-serif">Genres</span>
           </h2>
           <div className="flex justify-center items-center gap-4 mt-6">
             <div className="w-20 h-[1px] bg-pink-500/40"></div>
@@ -51,7 +48,7 @@ const TopGenres = () => {
                   src={book.coverImage}
                   alt={book.genre}
                   onError={(e) => {
-                    e.target.style.display = "none";
+                    e.target.style.display = 'none';
                   }}
                   className="absolute inset-0 w-full h-full object-cover transition-all duration-500 group-hover:brightness-110"
                 />
