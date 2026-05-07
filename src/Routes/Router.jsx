@@ -44,7 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-books",
-        element: <MyBooks />,
+        element: (
+          <PrivateRoute>
+            <MyBooks />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/update-book/:id",
@@ -63,9 +67,9 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path:"*",
-        element: <ErrorPage/>
-      }
+        path: "*",
+        element: <ErrorPage />,
+      },
     ],
   },
 ]);

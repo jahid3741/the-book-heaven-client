@@ -23,8 +23,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50 bg-white/70 dark:bg-[#0f081c]/70 backdrop-blur-md border-b border-[#f3f4f6] dark:border-white/10 text-gray-900 dark:text-white transition-colors duration-500">
-      {/* Increased horizontal padding (px-8 lg:px-12) for a spacious feel */}
-      <div className="navbar max-w-7xl mx-auto px-8 lg:px-12 h-24">
+      <div className="navbar max-w-7xl mx-auto px-4 lg:px-12 h-24">
         <div className="navbar-start lg:w-1/4">
           <Link
             to="/"
@@ -48,24 +47,66 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="navbar-center hidden lg:flex flex-1 justify-center">
-          {/* Increased gap between links to gap-10 */}
-          <ul className="flex items-center gap-10">
+        <div className="navbar-center flex-1 justify-center">
+          <div className="dropdown lg:hidden">
+            <div tabIndex={0} role="button" className="btn btn-ghost">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </div>
+
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-3 shadow bg-white dark:bg-[#1a1a2e] rounded-box w-52 space-y-2"
+            >
+              <li>
+                <NavLink to="/">Home</NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/all-books">All Books</NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/add-book">Add Book</NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/my-books">My Books</NavLink>
+              </li>
+            </ul>
+          </div>
+
+          <ul className="hidden lg:flex items-center gap-10">
             <li>
               <NavLink to="/" className={navLinkStyle}>
                 Home
               </NavLink>
             </li>
+
             <li>
               <NavLink to="/all-books" className={navLinkStyle}>
                 All Books
               </NavLink>
             </li>
+
             <li>
               <NavLink to="/add-book" className={navLinkStyle}>
                 Add Book
               </NavLink>
             </li>
+
             <li>
               <NavLink to="/my-books" className={navLinkStyle}>
                 My Books
@@ -89,6 +130,7 @@ const Navbar = () => {
                 data-tooltip-content={user?.displayName || "User"}
                 className="w-11 h-11 rounded-full border-2 border-pink-500/50 object-cover cursor-pointer hover:scale-105 transition-transform bg-gray-100 shadow-sm"
               />
+
               <Tooltip id="user-tooltip" place="bottom" className="z-50" />
 
               <button
@@ -96,20 +138,6 @@ const Navbar = () => {
                 className="flex items-center gap-2 px-6 py-2.5 rounded-full border border-gray-300 dark:border-white/30 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 transition-all duration-300 text-sm font-semibold tracking-wide cursor-pointer"
               >
                 Logout
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-                  />
-                </svg>
               </button>
             </>
           ) : (
@@ -120,6 +148,7 @@ const Navbar = () => {
               >
                 Login
               </Link>
+
               <Link
                 to="/register"
                 className="px-6 py-2.5 rounded-full bg-pink-500 hover:bg-pink-600 text-white transition-all duration-300 text-sm font-semibold tracking-wide shadow-lg shadow-pink-500/30"
